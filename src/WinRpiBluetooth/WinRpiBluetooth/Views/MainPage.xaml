@@ -1,0 +1,42 @@
+﻿<Page
+    x:Class="WinRpiBluetooth.Views.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WinRpiBluetooth.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:WinRpiBluetooth.ViewModels"
+    xmlns:skiaviews="using:SkiaSharp.Views.UWP"
+    mc:Ignorable="d"
+    Background="CornflowerBlue">
+    <!--Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"-->
+
+    <Page.DataContext>
+        <vm:MainPageViewModel />
+    </Page.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="100" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="100" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Margin="20,0,20,0" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                       Text="{Binding Greeting}" Foreground="Blue"></TextBlock>
+            <Button Margin="20,0,20,0" Content="Begin listening" Command="{Binding BeginListeningCommand}" 
+                    Background="Blue" Foreground="AliceBlue"></Button>
+        </StackPanel>
+
+        <skiaviews:SKXamlCanvas Grid.Row="2" Grid.Column="1" Width="200" Height="100" x:Name="Indicator" 
+                                PaintSurface="Indicator_OnPaintSurface" />
+
+    </Grid>
+</Page>
