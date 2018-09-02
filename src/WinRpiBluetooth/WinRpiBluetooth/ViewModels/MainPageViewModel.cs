@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿//Most code in this file comes from: https://github.com/Microsoft/Windows-universal-samples/blob/master/Samples/BluetoothRfcommChat/cs/Scenario2_ChatServer.xaml.cs
+
+using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Devices.Bluetooth;
 using Windows.Devices.Bluetooth.Rfcomm;
 using Windows.Networking.Sockets;
@@ -29,6 +27,17 @@ namespace WinRpiBluetooth.ViewModels
             set => SetProperty(ref _greeting, value);
         }
 
+        public string ListenButtonDisplay => (IsListening)
+            ? "Listening..."
+            : "Start listening";
+
+        private string _messageToSend;
+        public string MessageToSend
+        {
+            get => _messageToSend;
+            set => SetProperty(ref _messageToSend, value);
+        }
+
         private bool _isListening;
         public bool IsListening
         {
@@ -36,6 +45,7 @@ namespace WinRpiBluetooth.ViewModels
             set
             {
                 SetProperty(ref _isListening, value);
+                NotifyPropertyChanged(nameof(ListenButtonDisplay));
                 BeginListeningCommand.RaiseCanExecuteChanged();
             }
         }
@@ -64,6 +74,8 @@ namespace WinRpiBluetooth.ViewModels
 
         #endregion
 
+        #region Private methods
+
         /// <summary>
         /// Initializes the server using RfcommServiceProvider to advertise the Chat Service UUID and start listening
         /// for incoming connections.
@@ -81,7 +93,8 @@ namespace WinRpiBluetooth.ViewModels
             {
                 // The Bluetooth radio may be off.
                 //rootPage.NotifyUser("Make sure your Bluetooth Radio is on: " + ex.Message, NotifyType.ErrorMessage);
-                Debug.WriteLine("Make sure your Bluetooth Radio is on: " + ex.Message);
+                //Debug.WriteLine("Make sure your Bluetooth Radio is on: " + ex.Message);
+                await ShowError($"Make sure your Bluetooth Radio is on: {ex.Message}");
                 IsListening = false;
                 return;
             }
@@ -106,13 +119,14 @@ namespace WinRpiBluetooth.ViewModels
             {
                 // If you aren't able to get a reference to an RfcommServiceProvider, tell the user why.  Usually throws an exception if user changed their privacy settings to prevent Sync w/ Devices.  
                 //rootPage.NotifyUser(e.Message, NotifyType.ErrorMessage);
-                Debug.WriteLine($"Error while initializing Rfcomm Server: {e.Message}");
+                //Debug.WriteLine($"Error while initializing Rfcomm Server: {e.Message}");
+                await ShowError($"Error while initializing Rfcomm Server: {e.Message}");
                 IsListening = false;
                 return;
             }
 
             //rootPage.NotifyUser("Listening for incoming connections", NotifyType.StatusMessage);
-            Debug.WriteLine("Listening for incoming connections");
+            //Debug.WriteLine("Listening for incoming connections");
 
             await ShowInfo("Listening for incoming connections");
         }
@@ -148,8 +162,17 @@ namespace WinRpiBluetooth.ViewModels
             StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
         {
             // Don't need the listener anymore
-            _socketListener.Dispose();
-            _socketListener = null;
+            try
+            {
+                _socketListener.Dispose();
+                _socketListener = null;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.ToString());
+                Debugger.Break();
+            }
+            IsListening = false;
 
             try
             {
@@ -157,10 +180,13 @@ namespace WinRpiBluetooth.ViewModels
             }
             catch (Exception e)
             {
-                await Window.Current.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                Debug.WriteLine(e.ToString());
+                Debugger.Break();
+                await Window.Current.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
                 {
                     //rootPage.NotifyUser(e.Message, NotifyType.ErrorMessage);
-                    Debug.WriteLine($"Error while establishing socket: {e.Message}");
+                    //Debug.WriteLine($"Error while establishing socket: {e.Message}");
+                    await ShowError($"Error while establishing socket: {e.Message}");
                 });
                 Disconnect();
                 return;
@@ -173,10 +199,12 @@ namespace WinRpiBluetooth.ViewModels
             var reader = new DataReader(_socket.InputStream);
             bool remoteDisconnection = false;
 
-            await Window.Current.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            await Window.Current.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
             {
                 //rootPage.NotifyUser("Connected to Client: " + remoteDevice.Name, NotifyType.StatusMessage);
-                Debug.WriteLine($"Connected to Client: {remoteDevice.Name}");
+                //Debug.WriteLine($"Connected to Client: {remoteDevice.Name}");
+                await ShowInfo($"Connected to Client: {remoteDevice.Name}");
+                IsConnected = true;
             });
 
             // Infinite read buffer loop
@@ -206,19 +234,24 @@ namespace WinRpiBluetooth.ViewModels
                     }
                     string message = reader.ReadString(currentLength);
 
-                    await Window.Current.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    await Window.Current.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
                     {
                         //ConversationListBox.Items.Add("Received: " + message);
-                        Debug.WriteLine($"Received: {message}");
+                        //Debug.WriteLine($"Received: {message}");
+                        await ShowInfo($"Received: {message}");
                     });
                 }
                 // Catch exception HRESULT_FROM_WIN32(ERROR_OPERATION_ABORTED).
-                catch (Exception ex) when ((uint)ex.HResult == 0x800703E3)
+                catch (Exception e) when ((uint)e.HResult == 0x800703E3)
                 {
-                    await Window.Current.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                    Debug.WriteLine(e.ToString());
+                    Debugger.Break();
+                    await Window.Current.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
                     {
                         //rootPage.NotifyUser("Client Disconnected Successfully", NotifyType.StatusMessage);
-                        Debug.WriteLine("Client Disconnected Successfully");
+                        //Debug.WriteLine("Client Disconnected Successfully");
+                        await ShowInfo("Client Disconnected Successfully");
+                        IsConnected = false;
                     });
                     break;
                 }
@@ -228,11 +261,40 @@ namespace WinRpiBluetooth.ViewModels
             if (remoteDisconnection)
             {
                 Disconnect();
-                await Window.Current.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                await Window.Current.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
                 {
                     //rootPage.NotifyUser("Client disconnected", NotifyType.StatusMessage);
-                    Debug.WriteLine("Client disconnected");
+                    //Debug.WriteLine("Client disconnected");
+                    await ShowInfo("Client disconnected");
+                    IsConnected = false;
                 });
+            }
+        }
+
+        private async void SendMessage()
+        {
+            // There's no need to send a zero length message
+            if (!String.IsNullOrWhiteSpace(MessageToSend))
+            {
+                // Make sure that the connection is still up and there is a message to send
+                if (_socket != null)
+                {
+                    string message = MessageToSend.Trim();
+                    _writer.WriteUInt32((uint)message.Length);
+                    _writer.WriteString(message);
+
+                    //ConversationListBox.Items.Add("Sent: " + message);
+                    // Clear the messageTextBox for a new message
+                    MessageToSend = String.Empty;
+
+                    await _writer.StoreAsync();
+
+                }
+                else
+                {
+                    //rootPage.NotifyUser("No clients connected, please wait for a client to connect before attempting to send a message", NotifyType.StatusMessage);
+                    await ShowError("No clients connected, please wait for a client to connect before attempting to send a message");
+                }
             }
         }
 
@@ -266,6 +328,8 @@ namespace WinRpiBluetooth.ViewModels
                 IsListening = false;
             });
         }
+
+        #endregion
 
         public MainPageViewModel()
         {

@@ -31,7 +31,7 @@
         <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Margin="20,0,20,0" VerticalAlignment="Center" HorizontalAlignment="Center" 
                        Text="{Binding Greeting}" Foreground="Blue"></TextBlock>
-            <Button Margin="20,0,20,0" Content="Begin listening" Command="{Binding BeginListeningCommand}" 
+            <Button Margin="20,0,20,0" Content="{Binding ListenButtonDisplay}" Command="{Binding BeginListeningCommand}" 
                     Background="Blue" Foreground="AliceBlue"></Button>
         </StackPanel>
 

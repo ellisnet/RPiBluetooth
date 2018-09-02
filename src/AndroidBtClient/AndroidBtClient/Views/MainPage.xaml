@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:AndroidBtClient.Views"
+             xmlns:vm="clr-namespace:AndroidBtClient.ViewModels"
+             x:Class="AndroidBtClient.Views.MainPage"
+             BindingContext="{Binding Source={x:Static vm:DesignTimeViewModelLocator.MainPage}}"
+             Title="{Binding PageTitle}">
+
+    <StackLayout>
+        <Button Text="Connect to device" Command="{Binding ConnectToDeviceCommand}"></Button>
+    </StackLayout>
+
+</ContentPage>
