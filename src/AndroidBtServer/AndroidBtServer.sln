@@ -1,0 +1,60 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2016
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AndroidBtServer.Android", "AndroidBtServer\AndroidBtServer.Android\AndroidBtServer.Android.csproj", "{6401FAB3-D7F2-4152-AC58-881F42CA4627}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AndroidBtServer", "AndroidBtServer\AndroidBtServer\AndroidBtServer.csproj", "{56675D00-89A6-45D8-A8D5-C42EF6BC9E02}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CodeBrix", "CodeBrix", "{0611A93B-56C7-46E1-8BBF-B67B333CAA7A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeBrix.Prism", "..\..\..\CodeBrix_private\Source\Prism\CodeBrix.Prism\CodeBrix.Prism.csproj", "{12ACC634-10B6-4FF2-B436-2155164A045F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeBrix.Prism.Android", "..\..\..\CodeBrix_private\Source\Prism\CodeBrix.Prism.Android\CodeBrix.Prism.Android.csproj", "{2328735B-D8EC-4449-B46B-50C0378CF8D4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeBrix.Prism.DryIoc", "..\..\..\CodeBrix_private\Source\Prism\CodeBrix.Prism.DryIoc\CodeBrix.Prism.DryIoc.csproj", "{A580081D-2CF9-44C0-A0AC-538E3250DAE7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6401FAB3-D7F2-4152-AC58-881F42CA4627}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6401FAB3-D7F2-4152-AC58-881F42CA4627}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6401FAB3-D7F2-4152-AC58-881F42CA4627}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{6401FAB3-D7F2-4152-AC58-881F42CA4627}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6401FAB3-D7F2-4152-AC58-881F42CA4627}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6401FAB3-D7F2-4152-AC58-881F42CA4627}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{56675D00-89A6-45D8-A8D5-C42EF6BC9E02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56675D00-89A6-45D8-A8D5-C42EF6BC9E02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56675D00-89A6-45D8-A8D5-C42EF6BC9E02}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{56675D00-89A6-45D8-A8D5-C42EF6BC9E02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56675D00-89A6-45D8-A8D5-C42EF6BC9E02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56675D00-89A6-45D8-A8D5-C42EF6BC9E02}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{12ACC634-10B6-4FF2-B436-2155164A045F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12ACC634-10B6-4FF2-B436-2155164A045F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12ACC634-10B6-4FF2-B436-2155164A045F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12ACC634-10B6-4FF2-B436-2155164A045F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2328735B-D8EC-4449-B46B-50C0378CF8D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2328735B-D8EC-4449-B46B-50C0378CF8D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2328735B-D8EC-4449-B46B-50C0378CF8D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2328735B-D8EC-4449-B46B-50C0378CF8D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A580081D-2CF9-44C0-A0AC-538E3250DAE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A580081D-2CF9-44C0-A0AC-538E3250DAE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A580081D-2CF9-44C0-A0AC-538E3250DAE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A580081D-2CF9-44C0-A0AC-538E3250DAE7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{12ACC634-10B6-4FF2-B436-2155164A045F} = {0611A93B-56C7-46E1-8BBF-B67B333CAA7A}
+		{2328735B-D8EC-4449-B46B-50C0378CF8D4} = {0611A93B-56C7-46E1-8BBF-B67B333CAA7A}
+		{A580081D-2CF9-44C0-A0AC-538E3250DAE7} = {0611A93B-56C7-46E1-8BBF-B67B333CAA7A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {340ED99C-3803-4675-9A13-E2A7414FF18C}
+	EndGlobalSection
+EndGlobal

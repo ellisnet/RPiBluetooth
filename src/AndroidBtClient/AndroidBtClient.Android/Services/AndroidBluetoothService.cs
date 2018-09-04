@@ -148,7 +148,7 @@ namespace AndroidBtClient.Droid.Services
 
                     try
                     {
-                        BluetoothSocket socket = btDevice.CreateInsecureRfcommSocketToServiceRecord(BtServiceUuid);
+                        BluetoothSocket socket = btDevice.CreateRfcommSocketToServiceRecord(BtServiceUuid);
                         await socket.ConnectAsync();
                         await Task.Delay(1000);
 
